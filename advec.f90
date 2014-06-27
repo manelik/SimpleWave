@@ -123,9 +123,7 @@
   x0 = dble(Nx/2)*dx
   s0 = 1.0D0
 
-! Initial data (stationary gaussian).
-
-  pi = 0.0D0
+! Initial data (gaussian).
 
   do i=0,Nx
      phi(i) = a0*exp(-(x(i)-x0)**2/s0**2)
@@ -140,7 +138,7 @@
 ! ***   OPEN OUTPUT FILES   ***
 ! *****************************
 
-   open(1,file='phi_w.xl',form='formatted',status='replace')
+   open(1,file='phi.xl',form='formatted',status='replace')
 
 
 ! *********************************
@@ -186,7 +184,7 @@
      if (method=='f_euler') then 
 
         do j = 1, (Nx-1)
-           phi(j) = phi_p(j) + 0.5D0*v*rho*( phi(j+1)-phi(j-1) )
+           phi(j) = phi_p(j) - 0.5D0*v*rho*( phi_p(j+1)-phi_p(j-1) )
         end do
 
 !    We leave boundaries alone for the moment
