@@ -1,0 +1,55 @@
+
+
+
+!    Iterative Crank-Nicholson (3 steps).  This uses centered
+!    differences in space, but iterates three times in order
+!    to get second order accuracy in time and also stability.
+!    The first two iterations go only half a time step forward,
+!    and the third one goes the full time step.
+
+     if (method=='icn') then
+
+!       Three ICN iterations.
+
+        do j=1,3
+
+!          Source for phi.
+
+           sphi = pi
+
+!          Sources for psi and pi using centered differences.
+
+           do i=1,Nx-1
+              spsi(i) = 0.5D0*(pi(i+1) - pi(i-1))/dx
+              spi(i)  = v**2*0.5D0*(psi(i+1) - psi(i-1))/dx &
+                      + 0.02*exp(-(x(i) - v*t - x0)**2)
+           end do
+
+!          Boundary.  For the boundary we use one-sided differences
+!          for the source of psi (they can be first order or second order).
+!          The source for pi is then obtained by asking for the incoming
+!          wave to be zero.
+
+!          spsi(0) = + v*(psi(1) - psi(0))/dx
+           spsi(0) = + v*(2.0D0*(psi(1) - psi(0)) - 0.5D0*(psi(2) - psi(0)))/dx
+           spi(0 ) = + spsi(0)
+
+!          spsi(Nx) = - v*(psi(Nx) - psi(Nx-1))/dx
+           spsi(Nx) = - v*(2.0D0*(psi(Nx) - psi(Nx-1)) - 0.5D0*(psi(Nx) - psi(Nx-2)))/dx
+           spi(Nx ) = - spsi(Nx)
+
+!          Update functions.  First two iterations we only
+!          advance half a time step.  The third time we advance
+!          the full step.
+
+           if (j<3) then
+              phi = phi_p + 0.5D0*dt*sphi
+              psi = psi_p + 0.5D0*dt*spsi
+              pi  = pi_p  + 0.5D0*dt*spi
+           else
+              phi = phi_p + dt*sphi
+              psi = psi_p + dt*spsi
+              pi  = pi_p  + dt*spi
+           end if
+
+        end do
