@@ -4,5 +4,5 @@
 2000		! Total number of grid points
 300		! Total number of time steps
 20		! Frequency of output
-f_euler		! Integration method (icn)
+lax_wendroff		! Integration method (icn)
 

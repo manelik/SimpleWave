@@ -192,6 +192,13 @@
 
 !    Unknown.
 
+     elseif (method=='lax_wendroff') then
+
+        do j = 1, (Nx-1)
+           phi(j) = phi_p(j) - 0.5D0*v*rho*( phi_p(j+1)-phi_p(j-1) ) &
+                & + 0.5D0*(v*rho)**2*(phi_p(j+1)-2.d0*phi_p(j)+phi_p(j-1))
+        end do
+        
      else
 
         print *, 'Unknown integartion method.'
