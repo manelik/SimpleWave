@@ -1,5 +1,6 @@
-!$Header: /usr/local/ollincvs/Codes/SimpleCodes/wave.f90,v 1.4 2011-06-16 15:56:25 malcubi Exp $
-
+!
+!
+!
   program advec
 
 ! This is a simple code for the advection equation
